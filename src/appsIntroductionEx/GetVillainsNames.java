@@ -2,9 +2,10 @@ package src.appsIntroductionEx;
 
 import src.Utils;
 
-import java.sql.*;
-import java.util.Properties;
-import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GetVillainsNames {
     private static final String GET_VILLAINS_NAMES =
