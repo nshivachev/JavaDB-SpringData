@@ -1,4 +1,4 @@
-package src.appsIntroductionLab.dataRetrievalApplication;
+package src.appsIntroductionLab;
 
 import src.Utils;
 
