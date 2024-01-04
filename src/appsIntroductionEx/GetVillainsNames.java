@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GetVillainsNames {
+    private static final String MINIONS_DB = "minions_db";
     private static final String GET_VILLAINS_NAMES =
             "select v.name, count(distinct mv.minion_id) minions_count " +
                     "from villains v " +
@@ -20,7 +21,7 @@ public class GetVillainsNames {
     private static final String PRINT_FORMAT = "%s %s%n";
 
     public static void main(String[] args) throws SQLException {
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement query = connection.prepareStatement(GET_VILLAINS_NAMES);
 

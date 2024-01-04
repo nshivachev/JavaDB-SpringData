@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class GetMinionNames {
+    private static final String MINIONS_DB = "minions_db";
     private static final String GET_VILLAIN_NAME_MINIONS_NAME_AGE_BY_VILLAIN_ID =
             "select v.name as villain_name, m.name as minion_name, m.age as minion_age " +
                     "from minions m " +
@@ -25,7 +26,7 @@ public class GetMinionNames {
     public static void main(String[] args) throws SQLException {
         final Scanner scanner = new Scanner(System.in);
 
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement statement = connection.prepareStatement(GET_VILLAIN_NAME_MINIONS_NAME_AGE_BY_VILLAIN_ID);
 
@@ -48,6 +49,8 @@ public class GetMinionNames {
 
             minionsData.append(String.format(MINION_LIST_FORMAT, minionIndex++, minionName, minionAge));
         }
+
+        connection.close();
 
         minionsData.insert(0, String.format(VILLAIN_NAME_FORMAT, villainName));
 
