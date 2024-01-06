@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class IncreaseMinionsAge {
+    private static final String MINIONS_DB = "minions_db";
     private static final String GET_MINION_BY_ID = "select name from minions where id = ?";
     private static final String UPDATE_MINIONS_NAME_AGE_BY_ID = "update minions set name = lower(name), age = age + 1 where id = ?";
     private static final String GET_ALL_MINIONS_NAME_AGE = "select name, age from minions";
@@ -27,7 +28,7 @@ public class IncreaseMinionsAge {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement updateStatement = connection.prepareStatement(UPDATE_MINIONS_NAME_AGE_BY_ID);
 

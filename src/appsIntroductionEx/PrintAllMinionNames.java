@@ -9,11 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PrintAllMinionNames {
+    private static final String MINIONS_DB = "minions_db";
     private static final String GET_ALL_MINION_NAMES = "select name from minions";
     private static final String COLUMN_LABEL_NAME = "name";
 
     public static void main(String[] args) throws SQLException {
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement selectAllMinionsStatement = connection.prepareStatement(GET_ALL_MINION_NAMES);
 

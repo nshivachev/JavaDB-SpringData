@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ChangeTownNamesCasing {
+    private static final String MINIONS_DB = "minions_db";
     private static final String GET_TOWNS_COUNT_BY_COUNTRY_NAME = "select count(*) as count from towns where country = ?";
     private static final String UPDATE_TOWN_NAMES_BY_COUNTRY_NAME = "update towns set name = upper(name) where country = ?";
     private static final String NO_AFFECTED_TOWN_PRINT = "No town names were affected.";
@@ -23,7 +24,7 @@ public class ChangeTownNamesCasing {
 
         final String countryName = scanner.nextLine();
 
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         PreparedStatement selectStatement = connection.prepareStatement(GET_TOWNS_COUNT_BY_COUNTRY_NAME);
         selectStatement.setString(1, countryName);

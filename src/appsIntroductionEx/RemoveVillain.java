@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class RemoveVillain {
+    private static final String MINIONS_DB = "minions_db";
+
     private static final String GET_VILLAIN_NAME_BY_ID = "select name from villains where id = ?";
     private static final String GET_MINION_VILLAIN_COUNT_BY_VILLAIN_ID = "select count(minion_id) as count from minions_villains where villain_id = ?";
 
@@ -27,7 +29,7 @@ public class RemoveVillain {
 
         final int villainId = Integer.parseInt(scanner.nextLine());
 
-        final Connection connection = Utils.getSQLConnection("minions_db");
+        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
 
         PreparedStatement selectStatement = connection.prepareStatement(GET_VILLAIN_NAME_BY_ID);
         selectStatement.setInt(1, villainId);
