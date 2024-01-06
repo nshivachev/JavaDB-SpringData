@@ -21,7 +21,7 @@ public class GetMinionNames {
     private static final String COLUMN_LABEL_MINIONS_AGE = "minion_age";
     private static final String MINION_LIST_FORMAT = "%d. %s %d%n";
     private static final String VILLAIN_NAME_FORMAT = "Villain: %s%n";
-    private static final String NO_VILLAIN_FORMAT = "No villain with ID 10 exists in the database.";
+    private static final String NO_VILLAIN_FORMAT = "No villain with ID %s exists in the database.";
 
     public static void main(String[] args) throws SQLException {
         final Scanner scanner = new Scanner(System.in);
@@ -54,7 +54,7 @@ public class GetMinionNames {
 
         minionsData.insert(0, String.format(VILLAIN_NAME_FORMAT, villainName));
 
-        final String result = villainName == null ? NO_VILLAIN_FORMAT : minionsData.toString().trim();
+        final String result = villainName == null ? String.format(NO_VILLAIN_FORMAT, villainId) : minionsData.toString().trim();
 
         System.out.print(result);
     }
