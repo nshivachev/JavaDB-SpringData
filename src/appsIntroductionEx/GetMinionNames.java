@@ -54,7 +54,9 @@ public class GetMinionNames {
 
         minionsData.insert(0, String.format(VILLAIN_NAME_FORMAT, villainName));
 
-        final String result = villainName == null ? String.format(NO_VILLAIN_FORMAT, villainId) : minionsData.toString().trim();
+        final String result = villainName == null
+                ? String.format(NO_VILLAIN_FORMAT, villainId)
+                : minionsData.toString().trim();
 
         System.out.print(result);
     }
