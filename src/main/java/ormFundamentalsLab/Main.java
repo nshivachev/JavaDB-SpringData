@@ -21,27 +21,22 @@ public class Main {
 
         final EntityManager<User> userManager = new EntityManager<>(connection);
 
-        User firstUser = new User("First", 29, LocalDate.now());
-        //Insert user into the DB
-        userManager.persist(firstUser);
-        //Get the created user from the DB
-        firstUser = userManager.findFirst(User.class);
+        //Insert new users into the DB
+        userManager.persist(new User("First", 29, LocalDate.now()));
+        userManager.persist(new User("Second", 35, LocalDate.of(1999, 01, 31)));
+        userManager.persist(new User("Third", 18, LocalDate.now()));
+
+        final User firstUser = userManager.findFirst(User.class);
         printUser(firstUser);
         firstUser.setAge(32);
-        //Update the user into the DB
+        //Update user into the DB by id
         userManager.persist(firstUser);
-        firstUser = userManager.findFirst(User.class);
         printUser(firstUser);
 
-        User secondUser = new User("Second", 35, LocalDate.now());
-        secondUser.setRegistrationDate(LocalDate.of(1999, 01, 31));
-        userManager.persist(secondUser);
-        secondUser = userManager.findFirst(User.class, "user_name = 'Second' and age = 35");
+        final User secondUser = userManager.findFirst(User.class, "user_name = 'Second' and age = 35");
         printUser(secondUser);
 
-        User thirdUser = new User("Third", 18, LocalDate.now());
-        userManager.persist(thirdUser);
-        thirdUser = userManager.findFirst(User.class, "user_name = 'Third' and age >= 18");
+        final User thirdUser = userManager.findFirst(User.class, "user_name = 'Third' and age >= 18");
         printUser(thirdUser);
 
         System.out.println();
