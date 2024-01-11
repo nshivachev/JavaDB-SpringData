@@ -1,4 +1,4 @@
-package src.appsIntroductionEx;
+package appsIntroductionEx;
 
 import src.Utils;
 

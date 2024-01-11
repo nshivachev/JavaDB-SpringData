@@ -1,4 +1,4 @@
-package src.appsIntroductionLab;
+package appsIntroductionLab;
 
 import src.Utils;
 
