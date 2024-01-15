@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +40,7 @@ public class AddMinion {
         final String townName = minionData[3];
         final String villainName = scanner.nextLine().split("\\s+")[1];
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final int townId = getId(connection, List.of(townName), GET_TOWN_ID_BY_NAME, INSERT_INTO_TOWNS, TOWN_ADDED_FORMAT);
 

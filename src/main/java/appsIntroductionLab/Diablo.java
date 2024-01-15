@@ -1,6 +1,6 @@
 package appsIntroductionLab;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ public class Diablo {
     public static void main(String[] args) throws SQLException {
         final Scanner scanner = new Scanner(System.in);
 
-        final Connection connection = Utils.getSQLConnection("diablo");
+        final Connection connection = Connector.getSQLConnection("diablo");
 
         System.out.print("Enter username: ");
         final String username = scanner.nextLine();

@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +21,7 @@ public class GetVillainsNames {
     private static final String PRINT_FORMAT = "%s %s%n";
 
     public static void main(String[] args) throws SQLException {
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement query = connection.prepareStatement(GET_VILLAINS_NAMES);
 

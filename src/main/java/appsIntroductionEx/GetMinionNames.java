@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +26,7 @@ public class GetMinionNames {
     public static void main(String[] args) throws SQLException {
         final Scanner scanner = new Scanner(System.in);
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement statement = connection.prepareStatement(GET_VILLAIN_NAME_MINIONS_NAME_AGE_BY_VILLAIN_ID);
 

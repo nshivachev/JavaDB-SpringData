@@ -1,8 +1,8 @@
-package ormFundamentalsLab.entities;
+package customORM.entities;
 
-import ormFundamentalsLab.orm.annotations.Column;
-import ormFundamentalsLab.orm.annotations.Entity;
-import ormFundamentalsLab.orm.annotations.Id;
+import customORM.orm.annotations.Column;
+import customORM.orm.annotations.Entity;
+import customORM.orm.annotations.Id;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +28,7 @@ public class IncreaseMinionsAge {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement updateStatement = connection.prepareStatement(UPDATE_MINIONS_NAME_AGE_BY_ID);
 

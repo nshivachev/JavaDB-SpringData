@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,7 @@ public class RemoveVillain {
 
         final int villainId = Integer.parseInt(scanner.nextLine());
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         PreparedStatement selectStatement = connection.prepareStatement(GET_VILLAIN_NAME_BY_ID);
         selectStatement.setInt(1, villainId);

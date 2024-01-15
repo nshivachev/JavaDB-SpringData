@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -18,7 +18,7 @@ public class IncreaseAgeStoredProcedure {
 
         final int minionId = Integer.parseInt(scanner.nextLine());
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final CallableStatement callProcedureStatement = connection.prepareCall(UPDATE_AGE_PROCEDURE);
         callProcedureStatement.setInt(1, minionId);

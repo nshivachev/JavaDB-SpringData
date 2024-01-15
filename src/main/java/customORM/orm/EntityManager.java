@@ -1,44 +1,53 @@
-package ormFundamentalsLab.orm;
+package customORM.orm;
 
-import ormFundamentalsLab.orm.annotations.Column;
-import ormFundamentalsLab.orm.annotations.Entity;
-import ormFundamentalsLab.orm.annotations.Id;
+import customORM.orm.annotations.Column;
+import customORM.orm.annotations.Entity;
+import customORM.orm.annotations.Id;
+import utils.Connector;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.String.format;
-import static java.lang.String.join;
 
 public class EntityManager<E> implements DbContext<E> {
+    private final static String DB_NAME = "soft_uni";
     private final Connection connection;
 
+    private final static String CREATE_TABLE_FORMAT = "create table %s (id int primary key auto_increment, %s)";
+    private final static String ALTER_TABLE_FORMAT = "alter table %s add column %s";
     private final static String GET_TABLE_FORMAT = "select * from %s %s";
     private final static String GET_FIRST_TABLE_ROW_FORMAT = "select * from %s %s limit 1";
     private final static String INSERT_QUERY_FORMAT = "insert into %s (%s) values (%s)";
     private final static String UPDATE_QUERY_BY_ID_FORMAT = "update %s set %s where id = %s";
+    private final static String DELETE_TABLE_FORMAT = "delete from %s where %s = %s";
+
+    private final static String COLUMN_NAME_TYPE_FORMAT = "%s %s";
+    private final static String GET_TABLE_FIELD_NAME_FORMAT = "select `column_name` from `information_schema`.`columns` where `table_schema`='%s' and `column_name`!='id' and `table_name`='%s'";
+    private final static String INSERT_VALUE_FORMAT = "'%s'";
+    private final static String UPDATE_VALUE_FORMAT = "%s = %s";
+    private final static String WHERE_CLAUSE_FORMAT = "where %s";
+
+    private final static String INT = "int";
+    private final static String DATE = "date";
+    private final static String VARCHAR = "varchar(45)";
+
+    private final static String EMPTY_STRING = "";
+    private final static String COMMA = ", ";
 
     private final static String MISSING_ENTITY_ANNOTATION_EXCEPTION = "Provided class does not have Entity annotation";
     private final static String MISSING_PRIMARY_KEY_EXCEPTION = "Entity does not primary key";
     private final static String UNSUPPORTED_TYPE_EXCEPTION_FORMAT = "Unsupported type: %s";
 
-    private final static String WHERE_KEYWORD = "WHERE";
-    private final static String COMMA = ",";
-    private final static String SINGLE_QUOTE = "'";
-    private final static String EMPTY_STRING = "";
-    private final static String EMPTY_SPACE = " ";
-    private final static String EQUAL_SIGN = "=";
 
-
-    public EntityManager(Connection connection) {
-        this.connection = connection;
+    public EntityManager() throws SQLException {
+        this.connection = Connector.getSQLConnection(DB_NAME);
     }
 
     @Override
@@ -74,6 +83,91 @@ public class EntityManager<E> implements DbContext<E> {
         final ResultSet resultSet = connection.createStatement().executeQuery(query);
 
         return createEntity(table, resultSet);
+    }
+
+    @Override
+    public void doCreate(Class<E> entityClass) throws SQLException {
+        final String query = String.format(CREATE_TABLE_FORMAT, getTableName(entityClass), getAllFieldsAndDataTypes(entityClass));
+
+        connection.prepareStatement(query).execute();
+    }
+
+    @Override
+    public void doAlter(Class<E> entityClass) throws SQLException {
+        final String query = String.format(ALTER_TABLE_FORMAT, getTableName(entityClass), getNewFields(entityClass));
+
+        connection.prepareStatement(query).executeUpdate();
+    }
+
+    @Override
+    public void doDelete(Class<E> entityClass, String column, String criteria) throws SQLException {
+        final String query = String.format(DELETE_TABLE_FORMAT, getTableName(entityClass), column, criteria);
+
+        connection.prepareStatement(query).execute();
+    }
+
+    private Set<String> getAllFieldsFromTable(Class<?> entityClass) throws SQLException {
+        final Set<String> allFields = new HashSet<>();
+
+        final String query = String.format(GET_TABLE_FIELD_NAME_FORMAT, DB_NAME, getTableName(entityClass));
+
+        final PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+        final ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            allFields.add(resultSet.getString(1));
+        }
+
+        return allFields;
+    }
+
+    private String getNewFields(Class<?> entityClass) throws SQLException {
+        final List<String> result = new ArrayList<>();
+        final Set<String> existingTableFields = getAllFieldsFromTable(entityClass);
+
+        Arrays.stream(entityClass.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Column.class) && !field.isAnnotationPresent(Id.class))
+                .forEach(field -> {
+                    if (!existingTableFields.contains(field.getAnnotation(Column.class).name())) {
+                        result.add(String.format(
+                                COLUMN_NAME_TYPE_FORMAT,
+                                field.getAnnotation(Column.class).name(),
+                                getFieldType(field)));
+                    }
+                });
+
+        return String.join(COMMA, result);
+    }
+
+    private String getFieldType(Field field) {
+        final Class<?> fieldType = field.getType();
+        final String columnType;
+
+        if (fieldType == int.class || fieldType == Integer.class) {
+            columnType = INT;
+        } else if (fieldType == LocalDate.class) {
+            columnType = DATE;
+        } else if (fieldType == String.class) {
+            columnType = VARCHAR;
+        } else {
+            throw new ORMException(format(UNSUPPORTED_TYPE_EXCEPTION_FORMAT, fieldType));
+        }
+
+        return columnType;
+    }
+
+    private String getAllFieldsAndDataTypes(Class<E> entityClass) {
+        final Set<String> result = new LinkedHashSet<>();
+
+        Arrays.stream(entityClass.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Column.class))
+                .forEach(field -> result.add(String.format(
+                        COLUMN_NAME_TYPE_FORMAT,
+                        field.getAnnotation(Column.class).name(),
+                        getFieldType(field))));
+
+        return String.join(COMMA, result);
     }
 
     private void fillField(E entity, Field field, ResultSet resultSet) throws SQLException, IllegalAccessException {
@@ -126,7 +220,7 @@ public class EntityManager<E> implements DbContext<E> {
     }
 
     private static String getWhereClause(String where) {
-        return where == null ? EMPTY_STRING : WHERE_KEYWORD + EMPTY_SPACE + where;
+        return where == null ? EMPTY_STRING : String.format(WHERE_CLAUSE_FORMAT, where);
     }
 
     private String getTableName(Class<?> clazz) {
@@ -153,7 +247,7 @@ public class EntityManager<E> implements DbContext<E> {
 
             declaredField.setAccessible(true);
 
-            fieldValues.add(SINGLE_QUOTE + declaredField.get(entity) + SINGLE_QUOTE);
+            fieldValues.add(String.format(INSERT_VALUE_FORMAT, declaredField.get(entity)));
         }
 
         return fieldValues;
@@ -173,8 +267,8 @@ public class EntityManager<E> implements DbContext<E> {
     private boolean doInsert(E entity) throws IllegalAccessException, SQLException {
         final String query = format(INSERT_QUERY_FORMAT,
                 getTableName(entity.getClass()),
-                join(COMMA, getFieldsWithoutIdentity(entity)),
-                join(COMMA, getInsertValues(entity)));
+                String.join(COMMA, getFieldsWithoutIdentity(entity)),
+                String.join(COMMA, getInsertValues(entity)));
 
         return connection.prepareStatement(query).execute();
     }
@@ -183,12 +277,14 @@ public class EntityManager<E> implements DbContext<E> {
         final List<String> fieldsAndValues = new ArrayList<>();
 
         for (int i = 0; i < getFieldsWithoutIdentity(entity).size(); i++) {
-            fieldsAndValues.add(getFieldsWithoutIdentity(entity).get(i) + EQUAL_SIGN + getInsertValues(entity).get(i));
+            fieldsAndValues.add(String.format(UPDATE_VALUE_FORMAT,
+                    getFieldsWithoutIdentity(entity).get(i),
+                    getInsertValues(entity).get(i)));
         }
 
-        final String query = format(UPDATE_QUERY_BY_ID_FORMAT,
+        final String query = String.format(UPDATE_QUERY_BY_ID_FORMAT,
                 getTableName(entity.getClass()),
-                join(COMMA, fieldsAndValues),
+                String.join(COMMA, fieldsAndValues),
                 getId(entity));
 
         return connection.prepareStatement(query).execute();

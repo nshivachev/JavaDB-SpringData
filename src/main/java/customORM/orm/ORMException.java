@@ -1,4 +1,4 @@
-package ormFundamentalsLab.orm;
+package customORM.orm;
 
 public class ORMException extends RuntimeException {
     public ORMException(String msg) {

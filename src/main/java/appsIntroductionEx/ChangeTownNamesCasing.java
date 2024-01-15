@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +24,7 @@ public class ChangeTownNamesCasing {
 
         final String countryName = scanner.nextLine();
 
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         PreparedStatement selectStatement = connection.prepareStatement(GET_TOWNS_COUNT_BY_COUNTRY_NAME);
         selectStatement.setString(1, countryName);

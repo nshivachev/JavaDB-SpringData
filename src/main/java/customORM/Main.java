@@ -1,25 +1,26 @@
-package ormFundamentalsLab;
+package customORM;
 
-import ormFundamentalsLab.entities.User;
-import ormFundamentalsLab.orm.EntityManager;
-import src.Utils;
+import customORM.entities.User;
+import customORM.orm.EntityManager;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
-    private final static String DB_NAME = "soft_uni";
     private final static String PRINT_USER_FORMAT = "id: %d, username: %s, age: %d, registration date: %s%n";
     private final static String ALL_USERS_PRINT = "All users: ";
     private final static String FILTERED_USERS_PRINT = "User older than 18 years and registered after 2020 year: ";
 
     public static void main(String[] args) throws SQLException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
-        final Connection connection = Utils.getSQLConnection(DB_NAME);
 
-        final EntityManager<User> userManager = new EntityManager<>(connection);
+        final EntityManager<User> userManager = new EntityManager<>();
+
+
+        userManager.doCreate(User.class);
+
+//        userManager.doAlter(User.class);
 
         //Insert new users into the DB
         userManager.persist(new User("First", 29, LocalDate.now()));
@@ -50,6 +51,8 @@ public class Main {
 
         final List<User> filteredUsers = (List<User>) userManager.find(User.class, "age >= 18 and year(registration_date) >= 2020");
         filteredUsers.forEach(Main::printUser);
+
+//        userManager.doDelete(User.class, "age", "18");
     }
 
     private static void printUser(User userFound) {

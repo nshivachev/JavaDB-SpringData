@@ -1,6 +1,6 @@
 package appsIntroductionEx;
 
-import src.Utils;
+import utils.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ public class PrintAllMinionNames {
     private static final String COLUMN_LABEL_NAME = "name";
 
     public static void main(String[] args) throws SQLException {
-        final Connection connection = Utils.getSQLConnection(MINIONS_DB);
+        final Connection connection = Connector.getSQLConnection(MINIONS_DB);
 
         final PreparedStatement selectAllMinionsStatement = connection.prepareStatement(GET_ALL_MINION_NAMES);
 

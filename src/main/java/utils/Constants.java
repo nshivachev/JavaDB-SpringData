@@ -1,4 +1,4 @@
-package src;
+package utils;
 
 public enum Constants {
     ;
@@ -10,4 +10,6 @@ public enum Constants {
     static final String PASSWORD_VALUE = "12345";
 
     static final String JDBC_URL = "jdbc:mysql://localhost:3306/";
+    static final String PARAMETER_FOR_THE_DATABASE =
+            "?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC";
 }
