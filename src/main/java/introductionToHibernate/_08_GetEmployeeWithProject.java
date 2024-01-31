@@ -5,11 +5,10 @@ import introductionToHibernate.entities.Project;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import java.util.Comparator;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class GetEmployeeWithProject {
+public class _08_GetEmployeeWithProject {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_EMPLOYEES = "select e from Employee e where id = :id";
     private static final String EMPLOYEE_DATA_FORMAT = "%s %s - %s\n\t";
@@ -36,8 +35,8 @@ public class GetEmployeeWithProject {
                                 employee.getJobTitle()))
                 .append(
                         employee.getProjects().stream()
-                                .sorted(Comparator.comparing(Project::getName))
                                 .map(Project::getName)
+                                .sorted()
                                 .collect(Collectors.joining(DELIMITER)));
 
         entityManager.close();

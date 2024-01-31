@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.util.Comparator;
 
-public class FindLatest10Projects {
+public class _09_FindLatest10Projects {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_PROJECTS = "select p from Project p order by p.startDate desc";
     private static final String PROJECT_DATA_FORMAT = "Project name: %s%n\tProject Description: %s%n\tProject Start Date: %s:00.0%n\tProject End Date: %s%n";

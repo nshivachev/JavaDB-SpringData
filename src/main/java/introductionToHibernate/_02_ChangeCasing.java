@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class ChangeCasing {
+public class _02_ChangeCasing {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_TOWNS = "select t from Town t";
 

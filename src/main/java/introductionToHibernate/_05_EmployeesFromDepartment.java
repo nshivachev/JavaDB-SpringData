@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import java.util.Comparator;
 import java.util.List;
 
-public class EmployeesFromDepartment {
+public class _05_EmployeesFromDepartment {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_EMPLOYEES = "select e from Employee e";
     private static final String RESEARCH_AND_DEVELOPMENT = "Research and Development";

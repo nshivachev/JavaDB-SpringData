@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.util.Scanner;
 
-public class AddingANewAddressAndUpdatingEmployee {
+public class _06_AddingANewAddressAndUpdatingEmployee {
     private static final String DB_NAME = "soft_uni";
     private static final String UPDATE_EMPLOYEE = "update Employee e set e.address = :newAddress where e.lastName = :lastName";
     private static final String ADDRESS_TEXT = "Vitoshka 15";

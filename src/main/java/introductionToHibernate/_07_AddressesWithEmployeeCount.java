@@ -5,7 +5,7 @@ import introductionToHibernate.entities.Address;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
-public class AddressesWithEmployeeCount {
+public class _07_AddressesWithEmployeeCount {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_ADDRESSES = "select a from Address a order by a.employees.size desc";
     private static final String ADDRESS_DATA_FORMAT = "%s, %s - %d employees%n";

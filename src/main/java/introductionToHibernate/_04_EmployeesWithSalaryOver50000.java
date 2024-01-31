@@ -3,12 +3,11 @@ package introductionToHibernate;
 import introductionToHibernate.entities.Employee;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class EmployeesWithSalaryOver50000 {
+public class _04_EmployeesWithSalaryOver50000 {
     private static final String DB_NAME = "soft_uni";
     private static final String GET_EMPLOYEES = "select e from Employee e";
 
