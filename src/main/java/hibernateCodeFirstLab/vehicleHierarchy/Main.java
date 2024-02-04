@@ -11,10 +11,10 @@ public class Main {
 
         entityManager.getTransaction().begin();
 
-        Vehicle car = new Car("Ford Focus", "Petrol", 5);
-        Vehicle truck = new Truck("Volovo Truck", "Diesel", 3);
-        Vehicle plane = new Plane("Boeing", "kerosene", 100);
-        Vehicle bike = new Bike();
+        final Vehicle car = new Car("Ford Focus", "Petrol", 5);
+        final Vehicle truck = new Truck("Volovo Truck", "Diesel", 3);
+        final Vehicle plane = new Plane("Boeing", "kerosene", 100);
+        final Vehicle bike = new Bike();
 
         entityManager.persist(car);
         entityManager.persist(truck);

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "planes")
+//@Table(name = "planes")
 public class Plane extends Vehicle {
     private static final String PLANE_TYPE = "PLANE";
 

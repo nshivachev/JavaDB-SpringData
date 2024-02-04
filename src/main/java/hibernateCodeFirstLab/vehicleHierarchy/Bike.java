@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "bikes")
+//@Table(name = "bikes")
 public class Bike extends Vehicle {
     private static final String CAR_TYPE = "BIKE";
 

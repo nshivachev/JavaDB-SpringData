@@ -5,12 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "trucks")
-public class Truck extends Vehicle {
+//@Table(name = "trucks")
+public class Truck extends TransportationVehicle {
     private static final String TRUCK_TYPE = "TRUCK";
-
-    @Basic
-    private double loadCapacity;
 
     public Truck() {
         super(TRUCK_TYPE);
